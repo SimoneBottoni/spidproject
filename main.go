@@ -19,14 +19,14 @@ func main()  {
 
 	// Initialize our SPID object with information about this Service Provider
 	sp = &spidsaml.SP{
-		EntityID: "https://spidproject.herokuapp.com/",
+		EntityID: "http://54.164.84.39:8080/",
 		KeyFile:  "data/key/sp.key",
 		CertFile: "data/key/sp.pem",
 		AssertionConsumerServices: []string{
-			"http://localhost:8080/spid-sso",
+			"http://54.164.84.39:8080/spid-sso",
 		},
 		SingleLogoutServices: map[string]spidsaml.SAMLBinding{
-			"http://localhost:8080/spid-slo": spidsaml.HTTPRedirect,
+			"http://54.164.84.39:8080/spid-slo": spidsaml.HTTPRedirect,
 		},
 		AttributeConsumingServices: []spidsaml.AttributeConsumingService{
 			{
@@ -93,12 +93,12 @@ func index(writer http.ResponseWriter, request *http.Request) {
 
 func metadata(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/xml")
-	io.WriteString(writer, sp.Metadata())
+	log.Println(io.WriteString(writer, sp.Metadata()))
 }
 
 func spidLogin(writer http.ResponseWriter, request *http.Request) {
 	var idpName = ""
-	request.ParseForm()
+	log.Println(request.ParseForm())
 	for key := range request.Form {
 		idpName = key
 	}
@@ -136,7 +136,7 @@ func spidLogin(writer http.ResponseWriter, request *http.Request) {
 }
 
 func spidSSO(writer http.ResponseWriter, request *http.Request) {
-	request.ParseForm()
+	log.Println(request.ParseForm())
 	response, err := sp.ParseResponse(
 		request,
 		authnReqID,
@@ -151,7 +151,7 @@ func spidSSO(writer http.ResponseWriter, request *http.Request) {
 		spidSession = response.Session()
 		http.Redirect(writer, request, "/", http.StatusSeeOther)
 	} else {
-		fmt.Fprintf(writer, "Authentication Failed: %s (%s)", response.StatusMessage(), response.StatusCode2())
+		log.Println(fmt.Fprintf(writer, "Authentication Failed: %s (%s)", response.StatusMessage(), response.StatusCode2()))
 	}
 }
 
@@ -174,7 +174,7 @@ func spidSLO(writer http.ResponseWriter, request *http.Request) {
 		http.Redirect(writer, request, "/", http.StatusSeeOther)
 		return
 	}
-	request.ParseForm()
+	log.Println(request.ParseForm())
 	if (request.Form.Get("SAMLResponse") != "" || request.URL.Query().Get("SAMLResponse") != "") && logoutReqID != "" {
 		_, err := sp.ParseLogoutResponse(
 			request,
