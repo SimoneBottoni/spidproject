@@ -1,2 +1,2 @@
 #!/bin/bash
-/home/simone/go/bin/spidproject
+/home/ubuntu/go/bin/spidproject
