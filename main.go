@@ -57,9 +57,7 @@ func main()  {
 	http.HandleFunc("/logout", spidLogout)
 	http.HandleFunc("/spid-slo", spidSLO)
 
-
-	http.ListenAndServe(getPort(), nil)
-
+	log.Println(http.ListenAndServe(getPort(), nil))
 }
 
 func getPort() string {
