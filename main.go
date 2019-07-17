@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/gob"
 	"spidproject/spidsaml"
 	"fmt"
 	"html/template"
@@ -9,11 +10,30 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"github.com/gorilla/sessions"
 )
 
+type User struct {
+	SpidSession *spidsaml.Session
+	AuthnReqID string
+	LogoutReqID string
+}
+
 var sp *spidsaml.SP
-var spidSession *spidsaml.Session
-var authnReqID, logoutReqID string
+var store *sessions.CookieStore
+
+func init()  {
+
+	store = sessions.NewCookieStore([]byte("spidproject"))
+
+	store.Options = &sessions.Options{
+		Path:     "/",
+		MaxAge:   30 * 60,
+		HttpOnly: true,
+	}
+
+	gob.Register(&User{})
+}
 
 func main()  {
 
@@ -70,7 +90,13 @@ func getPort() string {
 }
 
 func index(writer http.ResponseWriter, request *http.Request) {
-	if spidSession == nil {
+	session, err := store.Get(request, "cookie-name")
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	user := getUser(session)
+	if user.SpidSession == nil {
 		t, err := template.ParseFiles("templates/index.html")
 		if err != nil {
 			log.Print("template parsing error: ", err)
@@ -84,7 +110,7 @@ func index(writer http.ResponseWriter, request *http.Request) {
 		if err != nil {
 			log.Print("template parsing error: ", err)
 		}
-		err = t.Execute(writer, spidSession)
+		err = t.Execute(writer, user.SpidSession)
 		if err != nil {
 			log.Print("template executing error: ", err)
 		}
@@ -97,6 +123,12 @@ func metadata(writer http.ResponseWriter, request *http.Request) {
 }
 
 func spidLogin(writer http.ResponseWriter, request *http.Request) {
+	session, err := store.Get(request, "cookie-name")
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	user := getUser(session)
 	var idpName = ""
 	log.Println(request.ParseForm())
 	for key := range request.Form {
@@ -107,7 +139,7 @@ func spidLogin(writer http.ResponseWriter, request *http.Request) {
 		idpName = "register_id"
 	}
 	if strings.Contains(idpName, "locale") {
-		idpName = "3.220.251.158_id"
+		idpName = "localhost_id"
 	}
 	if strings.Contains(idpName, "online") {
 		idpName = "gov_id"
@@ -130,25 +162,50 @@ func spidLogin(writer http.ResponseWriter, request *http.Request) {
 	authnreq.AcsIndex = 0
 	authnreq.AttrIndex = 0
 	authnreq.Level = 1
-	authnReqID = authnreq.ID
-	//writer.Write(authnreq.PostForm())
+	user.AuthnReqID = authnreq.ID
+
+	session.Values["user"] = user
+	err = session.Save(request, writer)
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	http.Redirect(writer, request, authnreq.RedirectURL(), http.StatusSeeOther)
 }
 
 func spidSSO(writer http.ResponseWriter, request *http.Request) {
+
+	session, err := store.Get(request, "cookie-name")
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	user := getUser(session)
 	log.Println(request.ParseForm())
 	response, err := sp.ParseResponse(
 		request,
-		authnReqID,
+		user.AuthnReqID,
 	)
-	authnReqID = ""
+	fmt.Println(user.AuthnReqID)
+	user.AuthnReqID = ""
 	if err != nil {
 		fmt.Printf("Bad Response received: %s\n", err)
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
 	}
 	if response.Success() {
-		spidSession = response.Session()
+		user.SpidSession = response.Session()
+		fmt.Println(user.SpidSession)
+		user.SpidSession.AssertionXML = nil
+
+		session.Values["user"] = user
+		err = session.Save(request, writer)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
 		http.Redirect(writer, request, "/", http.StatusSeeOther)
 	} else {
 		log.Println(fmt.Fprintf(writer, "Authentication Failed: %s (%s)", response.StatusMessage(), response.StatusCode2()))
@@ -156,38 +213,70 @@ func spidSSO(writer http.ResponseWriter, request *http.Request) {
 }
 
 func spidLogout(writer http.ResponseWriter, request *http.Request) {
-	if spidSession == nil {
+
+	session, err := store.Get(request, "cookie-name")
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	user := getUser(session)
+
+	if user.SpidSession == nil {
 		http.Redirect(writer, request, "/", http.StatusSeeOther)
 		return
 	}
-	logoutreq, err := sp.NewLogoutRequest(spidSession)
+	logoutreq, err := sp.NewLogoutRequest(user.SpidSession)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
 	}
-	logoutReqID = logoutreq.ID
+	user.LogoutReqID = logoutreq.ID
+
+	session.Values["user"] = user
+	err = session.Save(request, writer)
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	http.Redirect(writer, request, logoutreq.RedirectURL(), http.StatusSeeOther)
 }
 
 func spidSLO(writer http.ResponseWriter, request *http.Request) {
-	if spidSession == nil {
+
+	session, err := store.Get(request, "cookie-name")
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	user := getUser(session)
+
+	if user.SpidSession == nil {
 		http.Redirect(writer, request, "/", http.StatusSeeOther)
 		return
 	}
 	log.Println(request.ParseForm())
-	if (request.Form.Get("SAMLResponse") != "" || request.URL.Query().Get("SAMLResponse") != "") && logoutReqID != "" {
+	if (request.Form.Get("SAMLResponse") != "" || request.URL.Query().Get("SAMLResponse") != "") && user.LogoutReqID != "" {
 		_, err := sp.ParseLogoutResponse(
 			request,
-			logoutReqID, // Match the ID of our logout request for increased security.
+			user.LogoutReqID, // Match the ID of our logout request for increased security.
 		)
 		if err != nil {
 			fmt.Printf("Bad LogoutResponse received: %s\n", err)
 			http.Error(writer, err.Error(), http.StatusBadRequest)
 			return
 		}
-		logoutReqID = ""
-		spidSession = nil
+		user.LogoutReqID = ""
+		user.SpidSession = nil
 		fmt.Println("Session successfully destroyed.")
+
+		session.Values["user"] = user
+		err = session.Save(request, writer)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
 		http.Redirect(writer, request, "/", http.StatusSeeOther)
 	} else if request.Form.Get("SAMLRequest") != "" || request.URL.Query().Get("SAMLRequest") != "" {
 		logoutreq, err := sp.ParseLogoutRequest(request)
@@ -199,11 +288,11 @@ func spidSLO(writer http.ResponseWriter, request *http.Request) {
 		}
 
 		status := spidsaml.SuccessLogout
-		if logoutreq.SessionIndex() == spidSession.SessionIndex {
-			spidSession = nil
+		if logoutreq.SessionIndex() == user.SpidSession.SessionIndex {
+			user.SpidSession = nil
 		} else {
 			status = spidsaml.PartialLogout
-			fmt.Printf("SAML LogoutRequest session (%s) does not match current SPID session (%s)\n", logoutreq.SessionIndex(), spidSession.SessionIndex)
+			fmt.Printf("SAML LogoutRequest session (%s) does not match current SPID session (%s)\n", logoutreq.SessionIndex(), user.SpidSession.SessionIndex)
 		}
 
 		logoutres, err := sp.NewLogoutResponse(logoutreq, status)
@@ -212,9 +301,26 @@ func spidSLO(writer http.ResponseWriter, request *http.Request) {
 			return
 		}
 
+		session.Values["user"] = user
+		err = session.Save(request, writer)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
 		http.Redirect(writer, request, logoutres.RedirectURL(), http.StatusSeeOther)
 	} else {
 		http.Error(writer, "Invalid request", http.StatusBadRequest)
 	}
 
+}
+
+func getUser(s *sessions.Session) User {
+	val := s.Values["user"]
+	var user = &User{}
+	user, ok := val.(*User)
+	if !ok {
+		return User{SpidSession: nil}
+	}
+	return *user
 }

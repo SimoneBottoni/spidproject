@@ -33,6 +33,9 @@
   branch = "master"
   name = "github.com/crewjam/go-xmlsec"
 
+[[constraint]]
+  name = "github.com/gorilla/sessions"
+  version = "1.2.0"
 
 [prune]
   go-tests = true
