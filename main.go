@@ -107,7 +107,7 @@ func spidLogin(writer http.ResponseWriter, request *http.Request) {
 		idpName = "register_id"
 	}
 	if strings.Contains(idpName, "locale") {
-		idpName = "localhost_id"
+		idpName = "3.220.251.158_id"
 	}
 	if strings.Contains(idpName, "online") {
 		idpName = "gov_id"
