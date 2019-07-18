@@ -26,6 +26,20 @@
   revision = "1aa2f9374afac12f9864ced5babe8ff74427eed2"
 
 [[projects]]
+  branch = "master"
+  digest = "1:78102ee4d536347316bc42e818340cc50902e45dbd7fdd524c5a1fc0cb07b588"
+  name = "github.com/globalsign/mgo"
+  packages = [
+    ".",
+    "bson",
+    "internal/json",
+    "internal/sasl",
+    "internal/scram"
+  ]
+  pruneopts = "UT"
+  revision = "eeefdecb41b842af6dc652aaea4026e8403e62df"
+
+[[projects]]
   digest = "1:e72d1ebb8d395cf9f346fd9cbc652e5ae222dd85e0ac842dc57f175abed6d195"
   name = "github.com/gorilla/securecookie"
   packages = ["."]
@@ -41,13 +55,23 @@
   revision = "4355a998706e83fe1d71c31b07af94e34f68d74a"
   version = "v1.2.0"
 
+[[projects]]
+  branch = "master"
+  digest = "1:8272039e2c8300ec3cd1d04e8655dc57ab19ef1e08a60d8dad598598def2a548"
+  name = "github.com/kidstuff/mongostore"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "e650cd85ee4b2a2123aba049bb15ebfd6e727fae"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
     "github.com/beevik/etree",
     "github.com/crewjam/go-xmlsec",
-    "github.com/gorilla/sessions"
+    "github.com/globalsign/mgo",
+    "github.com/gorilla/sessions",
+    "github.com/kidstuff/mongostore"
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

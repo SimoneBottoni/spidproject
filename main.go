@@ -2,6 +2,8 @@ package main
 
 import (
 	"encoding/gob"
+	"github.com/globalsign/mgo"
+	"github.com/kidstuff/mongostore"
 	"spidproject/spidsaml"
 	"fmt"
 	"html/template"
@@ -20,17 +22,17 @@ type User struct {
 }
 
 var sp *spidsaml.SP
-var store *sessions.CookieStore
+var store *mongostore.MongoStore
+var dbsess *mgo.Session
 
 func init()  {
 
-	store = sessions.NewCookieStore([]byte("spidproject"))
-
-	store.Options = &sessions.Options{
-		Path:     "/",
-		MaxAge:   30 * 60,
-		HttpOnly: true,
+	dbsess, err := mgo.Dial("localhost")
+	if err != nil {
+		panic(err)
 	}
+
+	store = mongostore.NewMongoStore(dbsess.DB("spidproject").C("spidproject_session"), 1800, true, []byte("secret-key"))
 
 	gob.Register(&User{})
 }
@@ -90,7 +92,7 @@ func getPort() string {
 }
 
 func index(writer http.ResponseWriter, request *http.Request) {
-	session, err := store.Get(request, "cookie-name")
+	session, err := store.Get(request, "session-key")
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
@@ -123,7 +125,7 @@ func metadata(writer http.ResponseWriter, request *http.Request) {
 }
 
 func spidLogin(writer http.ResponseWriter, request *http.Request) {
-	session, err := store.Get(request, "cookie-name")
+	session, err := store.Get(request, "session-key")
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
@@ -165,10 +167,8 @@ func spidLogin(writer http.ResponseWriter, request *http.Request) {
 	user.AuthnReqID = authnreq.ID
 
 	session.Values["user"] = user
-	err = session.Save(request, writer)
-	if err != nil {
-		http.Error(writer, err.Error(), http.StatusInternalServerError)
-		return
+	if err = sessions.Save(request, writer); err != nil {
+		log.Printf("Error saving session: %v", err)
 	}
 
 	http.Redirect(writer, request, authnreq.RedirectURL(), http.StatusSeeOther)
@@ -176,7 +176,7 @@ func spidLogin(writer http.ResponseWriter, request *http.Request) {
 
 func spidSSO(writer http.ResponseWriter, request *http.Request) {
 
-	session, err := store.Get(request, "cookie-name")
+	session, err := store.Get(request, "session-key")
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
@@ -187,7 +187,6 @@ func spidSSO(writer http.ResponseWriter, request *http.Request) {
 		request,
 		user.AuthnReqID,
 	)
-	fmt.Println(user.AuthnReqID)
 	user.AuthnReqID = ""
 	if err != nil {
 		fmt.Printf("Bad Response received: %s\n", err)
@@ -196,7 +195,6 @@ func spidSSO(writer http.ResponseWriter, request *http.Request) {
 	}
 	if response.Success() {
 		user.SpidSession = response.Session()
-		fmt.Println(user.SpidSession)
 		user.SpidSession.AssertionXML = nil
 
 		session.Values["user"] = user
@@ -214,7 +212,7 @@ func spidSSO(writer http.ResponseWriter, request *http.Request) {
 
 func spidLogout(writer http.ResponseWriter, request *http.Request) {
 
-	session, err := store.Get(request, "cookie-name")
+	session, err := store.Get(request, "session-key")
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
@@ -244,7 +242,7 @@ func spidLogout(writer http.ResponseWriter, request *http.Request) {
 
 func spidSLO(writer http.ResponseWriter, request *http.Request) {
 
-	session, err := store.Get(request, "cookie-name")
+	session, err := store.Get(request, "session-key")
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
@@ -268,7 +266,6 @@ func spidSLO(writer http.ResponseWriter, request *http.Request) {
 		}
 		user.LogoutReqID = ""
 		user.SpidSession = nil
-		fmt.Println("Session successfully destroyed.")
 
 		session.Values["user"] = user
 		err = session.Save(request, writer)
@@ -276,6 +273,7 @@ func spidSLO(writer http.ResponseWriter, request *http.Request) {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		session.Options.MaxAge = -1
 
 		http.Redirect(writer, request, "/", http.StatusSeeOther)
 	} else if request.Form.Get("SAMLRequest") != "" || request.URL.Query().Get("SAMLRequest") != "" {
@@ -307,7 +305,7 @@ func spidSLO(writer http.ResponseWriter, request *http.Request) {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
 		}
-
+		session.Options.MaxAge = -1
 		http.Redirect(writer, request, logoutres.RedirectURL(), http.StatusSeeOther)
 	} else {
 		http.Error(writer, "Invalid request", http.StatusBadRequest)
