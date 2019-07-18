@@ -9,7 +9,7 @@ go get github.com/kidstuff/mongostore
 go get github.com/gorilla/sessions
 ```
 
-##Key
+## Key
 ```
 openssl genrsa -des3 -out sp.key 4096
 openssl req -new -key sp.key -out sp.csr
@@ -19,7 +19,7 @@ openssl x509 -req -days 365 -in sp.csr -signkey sp.key -out sp.crt
 openssl x509 -inform PEM -in sp.crt > sp.pem
 ```
 
-##MondoDB
+## MondoDB
 ```
 sudo apt install mongodb
 sudo systemctl enable mongodb //Optional
