@@ -30,11 +30,11 @@
 <defs>
     <style>
       .cls-1 {
-        font-size: 58.333px;
+        font-size: 100px;
         text-anchor: middle;
         font-family: Arial;
       }
     </style>
   </defs>
-  <text id="Test_Online" data-name="Test Online" class="cls-1" x="150.75" y="59"><tspan x="150.75">Test Online</tspan></text>
+  <text id="Test" class="cls-1" x="92" y="73.667"><tspan x="92">Test</tspan></text>
 </svg>
