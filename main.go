@@ -52,7 +52,7 @@ func main()  {
 		AttributeConsumingServices: []spidsaml.AttributeConsumingService{
 			{
 				ServiceName: "SpidProject",
-				Attributes:  []string{"email","gender", "dateOfBirth", "name", "familyName", "fiscalNumber", "spidCode"},
+				Attributes:  []string{"spidCode", "fiscalNumber", "familyName", "name", "gender", "dateOfBirth", "email"},
 			},
 		},
 	}
