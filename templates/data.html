@@ -11,40 +11,37 @@
 
 	<body>
 
-		<div class="main">
-			<div class="topheader">
-				<img id="headerlogo" src="logo/logo.png">
-			</div>
+		<div class="topheader">
+			<img id="headerlogo" src="logo/logo.png">
+		</div>
 
-			<div class="content">
+		<div class="content">
 
-				<!-- Data Visualization -->
-				<div class="divTable">
-					<h3>Dati Utente</h3>
-					<table>
+			<!-- Data Visualization -->
+			<div class="divTable">
+				<h3>Dati Utente</h3>
+				<table>
+					<tr>
+						<th>Attributo</th>
+						<th>Valore</th>
+					</tr>
+					{{ range $key, $val := .Attributes }}
 						<tr>
-							<th>Attributo</th>
-							<th>Valore</th>
+							<td>{{ $key }}</td>
+							<td>{{ $val }}</td>
 						</tr>
-						{{ range $key, $val := .Attributes }}
-							<tr>
-								<td>{{ $key }}</td>
-								<td>{{ $val }}</td>
-							</tr>
-						{{ end }}
-					</table>
-				</div>
-				
-				<div class="logoutDiv">
-					<a href="/logout"><button class="logoutButton">Logout</button></a>
-				</div>
-
+					{{ end }}
+				</table>
 			</div>
 
-			<div class="footer">
-				<img id="footerimg" src="logo/spid-agid-logo-lb.png">
+			<div class="logoutDiv">
+				<a href="/logout"><button class="logoutButton">Logout</button></a>
 			</div>
 
+		</div>
+
+		<div class="footer">
+			<img id="footerimg" src="logo/spid-agid-logo-lb.png">
 		</div>
 
 	</body>
