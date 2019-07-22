@@ -162,7 +162,7 @@ func spidLogin(writer http.ResponseWriter, request *http.Request) {
 		idpName = "register_id"
 	}
 	if strings.Contains(idpName, "test") {
-		idpName = "3.220.251.158_id"
+		idpName = "3.220.251.158:8088_id"
 	}
 
 	var idpLink = ""
