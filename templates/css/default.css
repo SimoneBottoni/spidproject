@@ -35,8 +35,9 @@ body {
 
 .columnContentRight {
 	float: right;
-	width: 30%;
+	width: 31%;
 	margin-top: 2%;
+	text-align: center;
 }
 
 .row:after {
@@ -114,5 +115,32 @@ tr:nth-child(even) {
 	}
 	#footerimg {
 		width: 70%;
+	}
+}
+
+@media only screen and (max-width: 768px) {
+	.content, .footer, .topheader {
+		margin-left: 0%;
+		margin-right: 0%;
+	}
+	.columnContentLeft {
+		float: none;
+		width: 88%;
+		margin: 6%;
+		font-size: 16px;
+	}
+	.columnContentRight {
+		width: 100%;
+		margin: 6% 0;
+		text-align: center;
+	}
+	#headerlogo {
+		width: 40%;
+	}
+	#footerimg {
+		width: 70%;
+	}
+	h1, table {
+		font-size: 16px;
 	}
 }
