@@ -1,100 +1,107 @@
 <!doctype html>
-<html>
+<html lang="it">
+	
 	<head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="theme-color" content="#0066cc"/>
+	<meta name="Description" content="Spid Project index">
 	<title>SPID</title>
-
 	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
-		
 	<link type="text/css" rel="stylesheet" href="css/spid-sp-access-button.min.css" />
 	<link type="text/css" rel="stylesheet" href="css/default.css" />
-
 	</head>
-
+		
 	<body>
+		
+		<header>
+			<img id="headerlogo" src="logo/logo.png"  alt="Logo">
+		</header>
+		
+		<main>
+			<div class="wrapper">
+				<div class="container">
+					
+					<div class="content">
+						<div class="row">
 
-		<div class="topheader">
-			<img id="headerlogo" src="logo/logo.png">
-		</div>
-
-		<div class="content">
-			<div class="row">
-
-				<div class="columnContentLeft">
-					<p>SPID è il sistema di accesso che consente di utilizzare, con un'identità digitale unica, i servizi online della Pubblica Amministrazione dei privati cittadini.<br>
-					Se sei già in possesso di un'identità digitale, accedi con le credenziali del tuo gestore.<br>
-					Se non hai ancora un'identità digitale, richiedila ad uno dei gestori.</p>
-					<p><a href="https://www.spid.gov.it/" target="_blank">Maggiori Infomazioni su SPID</a><br><br>
-					<a href="https://www.spid.gov.it/richiedi-spid" target="_blank">Non hai SPID ?</a></p>
-				</div>
-
-				<div class="columnContentRight">
-					<div>
-						<!-- AGID - SPID IDP BUTTON MEDIUM "ENTRA CON SPID" * begin * -->
-						<form name="spid_idp_access" action="/spid-login" method="post">
-							<a href="#" class="italia-it-button italia-it-button-size-m button-spid" spid-idp-button="#spid-idp-button-medium-post" aria-haspopup="true" aria-expanded="false">
-								<span class="italia-it-button-icon"><img src="img/spid-ico-circle-bb.svg" onerror="this.src='img/spid-ico-circle-bb.png'; this.onerror=null;" alt="" /></span>
-								<span class="italia-it-button-text">Entra con SPID</span>
-							</a>
-							<div id="spid-idp-button-medium-post" class="spid-idp-button spid-idp-button-tip spid-idp-button-relative">
-								<ul id="spid-idp-list-medium-root-post" class="spid-idp-button-menu" aria-labelledby="spid-idp">
-									<li class="spid-idp-button-link" data-idp="arubaid">
-										<button class="idp-button-idp-logo" name="aruba_id" type="submit"><span class="spid-sr-only">Aruba ID</span><img class="spid-idp-button-logo" src="img/spid-idp-arubaid.svg" onerror="this.src='img/spid-idp-arubaid.png'; this.onerror=null;" alt="Aruba ID" /></button>
-									</li>
-									<li class="spid-idp-button-link" data-idp="infocertid">
-										<button class="idp-button-idp-logo" name="infocert_id" type="submit"><span class="spid-sr-only">Infocert ID</span><img class="spid-idp-button-logo" src="img/spid-idp-infocertid.svg" onerror="this.src='img/spid-idp-infocertid.png'; this.onerror=null;" alt="Infocert ID" /></button>
-									</li>
-									<li class="spid-idp-button-link" data-idp="intesaid">
-										<button class="idp-button-idp-logo" name="intesa_id" type="submit"><span class="spid-sr-only">Intesa ID</span><img class="spid-idp-button-logo" src="img/spid-idp-intesaid.svg" onerror="this.src='img/spid-idp-intesaid.png'; this.onerror=null;" alt="Intesa ID" /></button>
-									</li>
-									<li class="spid-idp-button-link" data-idp="lepidaid">
-										<button class="idp-button-idp-logo" name="lepida_id" type="submit"><span class="spid-sr-only">Lepida ID</span><img class="spid-idp-button-logo" src="img/spid-idp-lepidaid.svg" onerror="this.src='img/spid-idp-lepidaid.png'; this.onerror=null;" alt="Lepida ID" /></button>
-									</li>
-									<li class="spid-idp-button-link" data-idp="namirialid">
-										<button class="idp-button-idp-logo" name="namirial_id" type="submit"><span class="spid-sr-only">Namirial ID</span><img class="spid-idp-button-logo" src="img/spid-idp-namirialid.svg" onerror="this.src='img/spid-idp-namirialid.png'; this.onerror=null;" alt="Namirial ID" /></button>
-									</li>
-									<li class="spid-idp-button-link" data-idp="posteid">
-										<button class="idp-button-idp-logo" name="poste_id" type="submit"><span class="spid-sr-only">Poste ID</span><img class="spid-idp-button-logo" src="img/spid-idp-posteid.svg" onerror="this.src='img/spid-idp-posteid.png'; this.onerror=null;" alt="Poste ID" /></button>
-									</li>
-									<li class="spid-idp-button-link" data-idp="sielteid">
-										<button class="idp-button-idp-logo" name="sielte_id" type="submit"><span class="spid-sr-only">Sielte ID</span><img class="spid-idp-button-logo" src="img/spid-idp-sielteid.svg" onerror="this.src='img/spid-idp-sielteid.png'; this.onerror=null;" alt="Sielte ID" /></button>
-									</li>
-									<li class="spid-idp-button-link" data-idp="spiditalia">
-										<button class="idp-button-idp-logo" name="spiditalia" type="submit"><span class="spid-sr-only">SPIDItalia Register.it</span><img class="spid-idp-button-logo" src="img/spid-idp-spiditalia.svg" onerror="this.src='img/spid-idp-spiditalia.png'; this.onerror=null;" alt="SpidItalia" /></button>
-									</li>
-									<li class="spid-idp-button-link" data-idp="timid">
-										<button class="idp-button-idp-logo" name="tim_id" type="submit"><span class="spid-sr-only">Tim ID</span><img class="spid-idp-button-logo" src="img/spid-idp-timid.svg" onerror="this.src='img/spid-idp-timid.png'; this.onerror=null;" alt="Tim ID" /></button>
-									</li>
-									<li class="spid-idp-button-link" data-idp="testid">
-										<button class="idp-button-idp-logo" name="test_id" type="submit"><span class="spid-sr-only">Test ID</span><img class="spid-idp-button-logo" src="img/spid-idp-test.svg" onerror="this.src='img/spid-idp-test.png'; this.onerror=null;" alt="Test" /></button>
-									</li>
-									<li class="spid-idp-button-link" data-idp="validatorid">
-										<button class="idp-button-idp-logo" name="validator_id" type="submit"><span class="spid-sr-only">Validator ID</span><img class="spid-idp-button-logo" src="img/spid-idp-validator.svg" onerror="this.src='img/spid-idp-validator.png'; this.onerror=null;" alt="Validator" /></button>
-									</li>
-									<li class="spid-idp-support-link" data-spidlink="info">
-										<a href="https://www.spid.gov.it">Maggiori informazioni</a>
-									</li>
-									<li class="spid-idp-support-link" data-spidlink="rich">
-										<a href="https://www.spid.gov.it/richiedi-spid">Non hai SPID?</a>
-									</li>
-									<li class="spid-idp-support-link" data-spidlink="help">
-										<a href="https://www.spid.gov.it/serve-aiuto">Serve aiuto?</a>
-									</li>
-								</ul>
+							<div class="column left">
+								<p>SPID è il sistema di accesso che consente di utilizzare, con un'identità digitale unica, i servizi online della Pubblica Amministrazione dei privati cittadini.<br>
+								Se sei già in possesso di un'identità digitale, accedi con le credenziali del tuo gestore.<br>
+								Se non hai ancora un'identità digitale, richiedila ad uno dei gestori.</p><br>
+								<p><a href="https://www.spid.gov.it/" target="_blank" rel="noreferrer">Maggiori Infomazioni su SPID</a><br>
+								<a href="https://www.spid.gov.it/richiedi-spid" target="_blank" rel="noreferrer">Non hai SPID ?</a></p>
 							</div>
-						</form>
-						<!-- AGID - SPID IDP BUTTON MEDIUM "ENTRA CON SPID" * end * -->
+
+							<div class="column right">
+								<!-- AGID - SPID IDP BUTTON MEDIUM "ENTRA CON SPID" * begin * -->
+								<form name="spid_idp_access" action="/spid-login" method="post">
+									<a class="italia-it-button italia-it-button-size-m button-spid" spid-idp-button="#spid-idp-button-medium-post" aria-haspopup="true" aria-expanded="false">
+										<span class="italia-it-button-icon"><img src="img/spid-ico-circle-bb.svg" onerror="this.src='img/spid-ico-circle-bb.png'; this.onerror=null;" alt="" /></span>
+										<span class="italia-it-button-text">Entra con SPID</span>
+									</a>
+									<div id="spid-idp-button-medium-post" class="spid-idp-button spid-idp-button-tip spid-idp-button-relative">
+										<ul id="spid-idp-list-medium-root-post" class="spid-idp-button-menu" aria-labelledby="spid-idp">
+											<li class="spid-idp-button-link" data-idp="arubaid">
+												<button class="idp-button-idp-logo" name="aruba_id" type="submit"><span class="spid-sr-only">Aruba ID</span><img class="spid-idp-button-logo" src="img/spid-idp-arubaid.svg" onerror="this.src='img/spid-idp-arubaid.png'; this.onerror=null;" alt="Aruba ID" /></button>
+											</li>
+											<li class="spid-idp-button-link" data-idp="infocertid">
+												<button class="idp-button-idp-logo" name="infocert_id" type="submit"><span class="spid-sr-only">Infocert ID</span><img class="spid-idp-button-logo" src="img/spid-idp-infocertid.svg" onerror="this.src='img/spid-idp-infocertid.png'; this.onerror=null;" alt="Infocert ID" /></button>
+											</li>
+											<li class="spid-idp-button-link" data-idp="intesaid">
+												<button class="idp-button-idp-logo" name="intesa_id" type="submit"><span class="spid-sr-only">Intesa ID</span><img class="spid-idp-button-logo" src="img/spid-idp-intesaid.svg" onerror="this.src='img/spid-idp-intesaid.png'; this.onerror=null;" alt="Intesa ID" /></button>
+											</li>
+											<li class="spid-idp-button-link" data-idp="lepidaid">
+												<button class="idp-button-idp-logo" name="lepida_id" type="submit"><span class="spid-sr-only">Lepida ID</span><img class="spid-idp-button-logo" src="img/spid-idp-lepidaid.svg" onerror="this.src='img/spid-idp-lepidaid.png'; this.onerror=null;" alt="Lepida ID" /></button>
+											</li>
+											<li class="spid-idp-button-link" data-idp="namirialid">
+												<button class="idp-button-idp-logo" name="namirial_id" type="submit"><span class="spid-sr-only">Namirial ID</span><img class="spid-idp-button-logo" src="img/spid-idp-namirialid.svg" onerror="this.src='img/spid-idp-namirialid.png'; this.onerror=null;" alt="Namirial ID" /></button>
+											</li>
+											<li class="spid-idp-button-link" data-idp="posteid">
+												<button class="idp-button-idp-logo" name="poste_id" type="submit"><span class="spid-sr-only">Poste ID</span><img class="spid-idp-button-logo" src="img/spid-idp-posteid.svg" onerror="this.src='img/spid-idp-posteid.png'; this.onerror=null;" alt="Poste ID" /></button>
+											</li>
+											<li class="spid-idp-button-link" data-idp="sielteid">
+												<button class="idp-button-idp-logo" name="sielte_id" type="submit"><span class="spid-sr-only">Sielte ID</span><img class="spid-idp-button-logo" src="img/spid-idp-sielteid.svg" onerror="this.src='img/spid-idp-sielteid.png'; this.onerror=null;" alt="Sielte ID" /></button>
+											</li>
+											<li class="spid-idp-button-link" data-idp="spiditalia">
+												<button class="idp-button-idp-logo" name="spiditalia" type="submit"><span class="spid-sr-only">SPIDItalia Register.it</span><img class="spid-idp-button-logo" src="img/spid-idp-spiditalia.svg" onerror="this.src='img/spid-idp-spiditalia.png'; this.onerror=null;" alt="SpidItalia" /></button>
+											</li>
+											<li class="spid-idp-button-link" data-idp="timid">
+												<button class="idp-button-idp-logo" name="tim_id" type="submit"><span class="spid-sr-only">Tim ID</span><img class="spid-idp-button-logo" src="img/spid-idp-timid.svg" onerror="this.src='img/spid-idp-timid.png'; this.onerror=null;" alt="Tim ID" /></button>
+											</li>
+											<li class="spid-idp-button-link" data-idp="testid">
+												<button class="idp-button-idp-logo" name="test_id" type="submit"><span class="spid-sr-only">Test ID</span><img class="spid-idp-button-logo" src="img/spid-idp-test.svg" onerror="this.src='img/spid-idp-test.png'; this.onerror=null;" alt="Test" /></button>
+											</li>
+											<li class="spid-idp-button-link" data-idp="validatorid">
+												<button class="idp-button-idp-logo" name="validator_id" type="submit"><span class="spid-sr-only">Validator ID</span><img class="spid-idp-button-logo" src="img/spid-idp-validator.svg" onerror="this.src='img/spid-idp-validator.png'; this.onerror=null;" alt="Validator" /></button>
+											</li>
+											<li class="spid-idp-support-link" data-spidlink="info">
+												<a href="https://www.spid.gov.it" rel="noreferrer">Maggiori informazioni</a>
+											</li>
+											<li class="spid-idp-support-link" data-spidlink="rich">
+												<a href="https://www.spid.gov.it/richiedi-spid" rel="noreferrer">Non hai SPID?</a>
+											</li>
+											<li class="spid-idp-support-link" data-spidlink="help">
+												<a href="https://www.spid.gov.it/serve-aiuto" rel="noreferrer">Serve aiuto?</a>
+											</li>
+										</ul>
+									</div>
+								</form>
+								<!-- AGID - SPID IDP BUTTON MEDIUM "ENTRA CON SPID" * end * -->
+
+							</div>
+
+						</div>
 					</div>
-
+				
 				</div>
-
 			</div>
-		</div>
+			
+		</main>
 
 		<footer>
 			<div class="footer">
-				<img id="footerimg" src="logo/spid-agid-logo-lb.png">
+				<img id="footerimg" src="logo/spid-agid-logo-lb.png" alt="spid AgID Logo">
 			</div>
 		</footer>
 

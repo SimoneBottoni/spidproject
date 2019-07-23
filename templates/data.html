@@ -1,49 +1,58 @@
 <!doctype html>
-<html>
+<html lang="it">
+
 	<head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="theme-color" content="#0066cc"/>
+	<meta name="Description" content="Spid Project data">
 	<title>SPID</title>
-
 	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+	<link type="text/css" rel="stylesheet" href="css/spid-sp-access-button.min.css" />
 	<link type="text/css" rel="stylesheet" href="css/default.css" />
-
 	</head>
 
 	<body>
+		
+		<header>
+			<img id="headerlogo" src="logo/logo.png"  alt="Logo">
+		</header>
+		
+		<main>
+			<div class="wrapper">
+				<div class="container">
+					<div class="content">
+						<!-- Data Visualization -->
+						<div class="divTable">
+							<h3>Dati Utente</h3>
+							<table>
+								<tr>
+									<th>Attributo</th>
+									<th>Valore</th>
+								</tr>
+								{{ range $key, $val := .Attributes }}
+									<tr>
+										<td>{{ $key }}</td>
+										<td>{{ $val }}</td>
+									</tr>
+								{{ end }}
+							</table>
+						</div>
 
-		<div class="topheader">
-			<img id="headerlogo" src="logo/logo.png">
-		</div>
-
-		<div class="content">
-
-			<!-- Data Visualization -->
-			<div class="divTable">
-				<h3>Dati Utente</h3>
-				<table>
-					<tr>
-						<th>Attributo</th>
-						<th>Valore</th>
-					</tr>
-					{{ range $key, $val := .Attributes }}
-						<tr>
-							<td>{{ $key }}</td>
-							<td>{{ $val }}</td>
-						</tr>
-					{{ end }}
-				</table>
+						<div class="logoutDiv">
+							<a href="/logout"><button class="logoutButton">Logout</button></a>
+						</div>
+						
+					</div>
+				</div>
 			</div>
+		</main>
 
-			<div class="logoutDiv">
-				<a href="/logout"><button class="logoutButton">Logout</button></a>
+		<footer>
+			<div class="footer">
+				<img id="footerimg" src="logo/spid-agid-logo-lb.png" alt="spid AgID Logo">
 			</div>
-
-		</div>
-
-		<div class="footer">
-			<img id="footerimg" src="logo/spid-agid-logo-lb.png">
-		</div>
+		</footer>
 
 	</body>
 </html>

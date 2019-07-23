@@ -1,22 +1,42 @@
-body {
+@font-face {
 	font-family: "Times New Roman", Times, serif;
-	background-color: #f5f5f5;
-	overflow-y: scroll;
-	margin-top: 2%;
-	margin-left: 10%;
-	margin-right: 10%;
+	font-display: auto;
 }
 
-.topheader {
+* {
+	margin: 0;
+	padding: 0;
+}
+
+header, footer {
+	display: block;
+}
+
+html, body {
+	height: 100%;
+	background-color: #f5f5f5;
+}
+
+body {
+	font-size: 16px;
+	overflow-y: scroll;
+}
+
+a:link, a:visited {
+	text-decoration: none;
+}
+
+img {
+	max-width: 100%;
 }
 
 #headerlogo {
+	margin: 2% 0 0 10%;
 	width: 20%;
 }
 
-.content {
-	margin-top: 5%;
-	margin-bottom: 5%;
+.wrapper {
+	margin: 5% 10%;
 	background-color: white;
 	border-color: black;
 	border-style: solid;
@@ -25,25 +45,31 @@ body {
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
-.columnContentLeft {
-	float: left;
-	width: 65%;
-	margin-left: 2%;
-	font-size: 20px;
-	text-align: justify;
+.container {
+	position: relative;
+	margin: 2%;
 }
 
-.columnContentRight {
-	float: right;
-	width: 31%;
+.content {
+	padding: 1%;
+	overflow: hidden;
+}
+
+.column {
+	float: left;
+}
+
+.column.left {
+	width: 60%;
+	margin: 2%;
+	text-align: justify;
+	font-size: 20px;
+}
+
+.column.right {
+	width: 36%;
 	margin-top: 2%;
 	text-align: center;
-}
-
-.row:after {
-	content: "";
-	display: table;
-	clear: both;
 }
 
 .logoutDiv {
@@ -89,24 +115,34 @@ tr:nth-child(even) {
 	background-color: #dddddd;
 }
 
+footer {
+	padding: 1.5%;
+}
+
 .footer {
-	bottom: 0;
 	text-align: center;
+	position: relative;
+	margin: 1% 15%;
 }
 
 #footerimg {
 	width: 40%;
 }
 
-@media screen and (max-width: 1200px) {
-	.columnContentLeft {
-		float: none;
-		width: 96%;
-		margin: 2%;
+@media screen and (max-width: 1000px) {
+	.container {
+		margin: 0 auto;
+		position: static;
 	}
-	.columnContentRight {
-		width: 100%;
-		margin: 6% 0;
+	.column {
+		float: none;
+	}
+	.column.left {
+		width: 96%;
+	}
+	.column.right {
+		width: 96%;
+		margin-top: 6%;
 		text-align: center;
 	}
 	#headerlogo {
@@ -118,22 +154,14 @@ tr:nth-child(even) {
 }
 
 @media only screen and (max-width: 768px) {
-	.columnContentLeft {
-		float: none;
-		width: 88%;
-		margin: 6%;
-		font-size: 16px;
-	}
-	.columnContentRight {
-		width: 100%;
-		margin: 6% 0;
-		text-align: center;
+	.column.left {
+		font-size: 17px;
 	}
 	#headerlogo {
 		width: 40%;
 	}
 	#footerimg {
-		width: 70%;
+		width: 80%;
 	}
 	h1, table {
 		font-size: 16px;
