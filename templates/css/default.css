@@ -30,6 +30,10 @@ img {
 	max-width: 100%;
 }
 
+h1 {
+	font-size: 35px;
+}
+
 #headerlogo {
 	margin: 2% 0 0 10%;
 	width: 20%;
@@ -95,7 +99,7 @@ img {
 .divTable {
 	text-align: center;
 	margin: 2%;
-	font-size: 20px;
+	font-size: 18px;
 }
 
 table {
@@ -142,8 +146,11 @@ footer {
 	}
 	.column.right {
 		width: 96%;
-		margin-top: 6%;
+		margin: 8% 2% 4% 2%;
 		text-align: center;
+	}
+	h1 {
+		font-size: 25px;
 	}
 	#headerlogo {
 		width: 30%;
