@@ -146,6 +146,9 @@ func (sp *SP) Metadata() string {
         {{ end }}
         
         {{ range $index, $attcs := .AttributeConsumingServices }}
+		{{if eq $attcs.ServiceName "eIDAS Natural Person Full Attribute Set"}}
+			{{$index = 100}}
+		{{end}}
         <md:AttributeConsumingService index="{{ $index }}"> 
             <md:ServiceName xml:lang="it">{{ $attcs.ServiceName }}</md:ServiceName>
             {{ range $attr := $attcs.Attributes }}
