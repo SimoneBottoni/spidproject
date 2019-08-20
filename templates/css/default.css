@@ -57,6 +57,12 @@ h1 {
 .content {
 	padding: 1%;
 	overflow: hidden;
+	text-align: justify;
+	font-size: 20px;
+}
+
+.contentText {
+	margin: 2%;
 }
 
 .column {
@@ -66,8 +72,6 @@ h1 {
 .column.left {
 	width: 60%;
 	margin: 2%;
-	text-align: justify;
-	font-size: 20px;
 }
 
 .column.right {
