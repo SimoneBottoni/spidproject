@@ -54,6 +54,10 @@ func main()  {
 				ServiceName: "SpidProject",
 				Attributes:  []string{"spidCode", "fiscalNumber", "familyName", "name", "gender", "dateOfBirth", "email"},
 			},
+			{
+				ServiceName: "eIDAS Natural Person Full Attribute Set",
+				Attributes:  []string{"spidCode", "familyName", "name", "gender", "dateOfBirth", "placeOfBirth", "address"},
+			},
 		},
 	}
 
@@ -142,6 +146,8 @@ func metadata(writer http.ResponseWriter, request *http.Request) {
 // This endpoint initiates SSO through the user-chosen Identity Provider.
 func spidLogin(writer http.ResponseWriter, request *http.Request) {
 
+	var eidAccess = false
+	
 	session, err := store.Get(request, "session-key")
 	if err != nil {
 		//http.Error(writer, err.Error(), http.StatusInternalServerError)
@@ -164,6 +170,10 @@ func spidLogin(writer http.ResponseWriter, request *http.Request) {
 	if strings.Contains(idpName, "test") {
 		idpName = "3.220.251.158:8088_id"
 	}
+	if strings.Contains(idpName, "eid") {
+		idpName = "sp-proxy.eid.gov.it_id"
+		eidAccess = true
+	}
 
 	var idpLink = ""
 	idpName = idpName[:len(idpName)-3]
@@ -184,6 +194,9 @@ func spidLogin(writer http.ResponseWriter, request *http.Request) {
 	authnreq := sp.NewAuthnRequest(idp)
 	authnreq.AcsIndex = 0
 	authnreq.AttrIndex = 0
+	if eidAccess {
+		authnreq.AttrIndex = 100
+	}
 	authnreq.Level = 2
 
 	// Save the ID of the Authnreq so that we can check it in the response
