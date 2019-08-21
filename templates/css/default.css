@@ -67,15 +67,29 @@ h1 {
 
 .column {
 	float: left;
-}
-
-.column.left {
-	width: 60%;
 	margin: 2%;
 }
 
-.column.right {
-	width: 36%;
+.column.left, .column.right {
+	width: 46%;
+}
+
+.columnI {
+	float: left;
+	margin: 2%;
+}
+
+.columnI.leftI {
+	width: 46%;
+	margin-left: 0%;
+	font-size: 17px;
+}
+
+.columnI.rightI {
+	width: 46%;
+}
+
+.buttonLogin {
 	margin-top: 2%;
 	text-align: center;
 }
@@ -137,20 +151,19 @@ footer {
 	width: 40%;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1200px) {
 	.container {
 		margin: 0 auto;
 	}
 	.column {
 		float: none;
+		margin-top: 6%;
 	}
 	.column.left {
 		width: 96%;
 	}
 	.column.right {
 		width: 96%;
-		margin: 8% 2% 4% 2%;
-		text-align: center;
 	}
 	h1 {
 		font-size: 25px;
@@ -163,9 +176,19 @@ footer {
 	}
 }
 
-@media only screen and (max-width: 768px) {
-	.column.left {
+@media only screen and (max-width: 750px) {
+	.column.left, .column.right {
 		font-size: 17px;
+	}
+	.columnI {
+		float: none;
+		margin-top: 6%;
+	}
+	.columnI.leftI {
+		width: 96%;
+	}
+	.columnI.rightI {
+		width: 96%;
 	}
 	#headerlogo {
 		width: 40%;
