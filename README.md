@@ -19,6 +19,12 @@ openssl x509 -req -days 365 -in sp.csr -signkey sp.key -out sp.crt
 openssl x509 -inform PEM -in sp.crt > sp.pem
 ```
 
+## Go
+```
+sudo snap install go --classic
+sudo apt-get install libxml2-dev libxmlsec1-dev pkg-config
+```
+
 ## MondoDB
 ```
 sudo apt install mongodb
