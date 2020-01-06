@@ -40,14 +40,14 @@ func main()  {
 
 	// Initialize our SPID object with information about this Service Provider
 	sp = &spidsaml.SP{
-		EntityID: "http://54.164.84.39:8080/",
+		EntityID: "http://3.224.228.76:8080/",
 		KeyFile:  "data/key/sp.key",
 		CertFile: "data/key/sp.pem",
 		AssertionConsumerServices: []string{
-			"http://54.164.84.39:8080/spid-sso",
+			"http://3.224.228.76:8080/spid-sso",
 		},
 		SingleLogoutServices: map[string]spidsaml.SAMLBinding{
-			"http://54.164.84.39:8080/spid-slo": spidsaml.HTTPRedirect,
+			"http://3.224.228.76:8080/spid-slo": spidsaml.HTTPRedirect,
 		},
 		AttributeConsumingServices: []spidsaml.AttributeConsumingService{
 			{
@@ -168,7 +168,7 @@ func spidLogin(writer http.ResponseWriter, request *http.Request) {
 		idpName = "register_id"
 	}
 	if strings.Contains(idpName, "test") {
-		idpName = "3.220.251.158:8088_id"
+		idpName = "3.225.59.88:8088_id"
 	}
 	if strings.Contains(idpName, "eid") {
 		idpName = "sp-proxy.eid.gov.it_id"
